@@ -1,0 +1,29 @@
+anthropic>=0.40.0
+bcrypt>=4.1.0
+customtkinter>=5.2.2
+python-docx>=1.1.0
+openpyxl>=3.1.2
+python-pptx>=0.6.23
+Pillow>=10.0.0
+python-dotenv>=1.0.0
+
+# v15.0 — Charts en Word (executive_report, commercial_proposal) y PowerPoint
+# Lazy import en los controllers, pero la dependencia debe estar declarada
+# o crashea en instalación limpia.
+matplotlib>=3.7.0
+numpy>=1.24.0
+
+# v14.5 — Stripe billing (opcional)
+# Si STRIPE_SECRET_KEY no está en el entorno, la app usa el modo demo
+# y este paquete no es necesario.
+stripe>=7.0.0
+
+# v14.5 — Webhook server (sólo para deploy del webhook, no para la app desktop)
+# Instalar solo en el servidor que recibe los eventos de Stripe.
+# pip install flask>=3.0.0
+
+# v16.0 — Servidor web (acceso multiplataforma: Windows/macOS/Linux/móvil).
+# La versión web vive en web/server.py y reutiliza el mismo motor.
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.0.0

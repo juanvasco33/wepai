@@ -1,0 +1,40 @@
+# render.yaml — Despliegue de WEP AI en Render.com
+#
+# Qué hace: arranca server.py (FastAPI + uvicorn), que sirve TANTO el backend
+# (/api/*) COMO el frontend (index.html). Toda la app corre desde Render.
+#
+# Cómo usarlo:
+#   1. Sube este archivo a la RAÍZ de tu repo de GitHub.
+#   2. Entra a https://render.com -> New -> Blueprint -> conecta tu repo.
+#   3. Render lee este archivo y crea el servicio automaticamente.
+#   4. Te dara una URL tipo https://wepai.onrender.com -> esa ES tu app.
+#   5. Pega tu ANTHROPIC_API_KEY en el dashboard (Environment) cuando lo pida.
+#
+# El disco persistente guarda la base de datos (cuentas de usuarios) entre
+# reinicios. Sin esto, las cuentas se perderian cada vez que el servicio duerme.
+#
+# CAMBIO vs. la version anterior: se agrego WEPAI_SECRET_KEY con generateValue,
+# para que Render genere un secreto de sesion aleatorio y ESTABLE. Sin esto, las
+# sesiones eran falsificables y se caian en cada reinicio.
+
+services:
+  - type: web
+    name: wepai
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "cd web && uvicorn server:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: WEPAI_DB_PATH
+        value: /var/data/wepai.db
+      - key: WEPAI_SECRET_KEY
+        generateValue: true        # Render genera un secreto aleatorio y estable
+      - key: ANTHROPIC_API_KEY
+        sync: false                # lo pegas tu en el dashboard; no se versiona
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+    disk:
+      name: wepai-data
+      mountPath: /var/data
+      sizeGB: 1

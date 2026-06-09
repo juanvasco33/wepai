@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WEP AI · Documentos legales y de negocio para Colombia</title>
+<meta name="description" content="Genera contratos, cotizaciones, nóminas, facturas y presentaciones con la normativa colombiana al día. Asistente de documentos con IA para pymes y freelancers.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<!-- Open Graph para compartir -->
+<meta property="og:title" content="WEP AI · Documentos legales y de negocio para Colombia">
+<meta property="og:description" content="Contratos, cotizaciones, nóminas y presentaciones con la ley colombiana aplicada correctamente.">
+<meta property="og:image" content="logo.png">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15201b; --paper:#f7f4ec; --paper-2:#efe9dc; --surface:#fffdf8;
+    --line:#d9d2c2; --line-soft:#e7e1d4;
+    --accent:#0b6e4f; --accent-deep:#084d37; --gold:#c79a3a; --muted:#6c6557;
+    --user-bubble:#0b6e4f; --danger:#b3261e;
+    --sidebar:#efe9dc; --dot:rgba(21,32,27,.035);
+    --shadow:0 1px 2px rgba(21,32,27,.06),0 8px 28px rgba(21,32,27,.08);
+    --radius:14px;
+  }
+  [data-theme="dark"]{
+    --ink:#e9efe9; --paper:#0e1512; --paper-2:#141d18; --surface:#16201b;
+    --line:#283530; --line-soft:#202c26;
+    --accent:#1aa674; --accent-deep:#0e7a55; --gold:#d9b15a; --muted:#9aa69d;
+    --user-bubble:#0e7a55; --danger:#e2675e;
+    --sidebar:#0b110e; --dot:rgba(255,255,255,.03);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'IBM Plex Sans',sans-serif; background:var(--paper); color:var(--ink);
+    background-image:radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0);
+    background-size:22px 22px; height:100dvh; overflow:hidden;
+    transition:background .25s,color .25s;
+  }
+  .hidden{display:none !important}
+  button{font-family:inherit}
+
+  /* ─────────────────────────  AUTH  ───────────────────────── */
+  .auth{position:fixed;inset:0;display:grid;place-items:center;padding:20px;z-index:50;
+    background:radial-gradient(circle at 1px 1px,var(--dot) 1px,transparent 0) var(--paper);background-size:22px 22px}
+  .auth-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;
+    width:100%;max-width:410px;padding:34px 32px 28px;box-shadow:var(--shadow);animation:rise .4s ease both}
+  .auth-brand{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:8px}
+  .auth-brand img{width:60px;height:60px;border-radius:15px;box-shadow:var(--shadow)}
+  .auth-brand h1{font-family:'Fraunces',serif;font-weight:600;font-size:24px}
+  .auth-sub{text-align:center;color:var(--muted);font-size:13.5px;margin-bottom:22px}
+  .tabs{display:flex;background:var(--paper-2);border-radius:11px;padding:4px;margin-bottom:18px;border:1px solid var(--line-soft)}
+  .tab{flex:1;text-align:center;padding:9px;border:none;background:none;border-radius:8px;cursor:pointer;
+    font-size:14px;font-weight:600;color:var(--muted);transition:.15s}
+  .tab.active{background:var(--surface);color:var(--accent-deep);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;color:var(--ink)}
+  .field input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;
+    background:var(--paper);color:var(--ink);font-size:14.5px;font-family:inherit;transition:.15s}
+  .field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,110,79,.15)}
+  .row2{display:flex;gap:10px}.row2 .field{flex:1}
+  .primary-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:11px;
+    padding:13px;font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;margin-top:4px}
+  .primary-btn:hover{background:var(--accent-deep)}
+  .primary-btn:disabled{opacity:.6;cursor:default}
+  .auth-err{background:rgba(179,38,30,.08);color:var(--danger);border:1px solid rgba(179,38,30,.25);
+    border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:14px}
+  .auth-foot{text-align:center;font-size:11.5px;color:var(--muted);margin-top:18px;line-height:1.5}
+
+  /* ─────────────────────────  APP SHELL  ───────────────────────── */
+  .app{display:flex;height:100dvh}
+  .sidebar{width:264px;flex-shrink:0;background:var(--sidebar);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;transition:transform .25s;z-index:30}
+  .sb-top{padding:16px 16px 12px}
+  .sb-brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .sb-brand img{width:34px;height:34px;border-radius:9px;box-shadow:var(--shadow)}
+  .sb-brand .nm{font-family:'Fraunces',serif;font-weight:600;font-size:17px}
+  .new-btn{width:100%;display:flex;align-items:center;gap:9px;justify-content:center;
+    background:var(--accent);color:#fff;border:none;border-radius:11px;padding:11px;font-size:14px;
+    font-weight:600;cursor:pointer;transition:background .15s}
+  .new-btn:hover{background:var(--accent-deep)}
+  .new-btn svg{width:17px;height:17px}
+  .sb-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--muted);padding:6px 18px 4px}
+  .conv-list{flex:1;overflow-y:auto;padding:2px 10px 10px}
+  .conv{display:block;width:100%;text-align:left;border:none;background:none;cursor:pointer;
+    padding:10px 11px;border-radius:9px;font-size:13.5px;color:var(--ink);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:.12s;margin-bottom:1px}
+  .conv:hover{background:var(--paper-2)}
+  .conv.active{background:var(--paper-2);font-weight:600}
+  .conv-empty{padding:10px 18px;font-size:12.5px;color:var(--muted);line-height:1.5}
+
+  /* User menu */
+  .user-box{border-top:1px solid var(--line);padding:11px;position:relative}
+  .user-btn{width:100%;display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;
+    padding:8px;border-radius:11px;transition:.12s}
+  .user-btn:hover{background:var(--paper-2)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(140deg,var(--accent),var(--accent-deep));
+    color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px;flex-shrink:0}
+  .user-info{flex:1;min-width:0;text-align:left}
+  .user-info .un{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .user-info .ue{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;text-transform:uppercase;letter-spacing:.03em}
+  .badge.free{background:var(--paper-2);color:var(--muted);border:1px solid var(--line)}
+  .badge.pro{background:rgba(199,154,58,.16);color:var(--gold);border:1px solid rgba(199,154,58,.4)}
+  .badge.biz{background:rgba(11,110,79,.14);color:var(--accent);border:1px solid rgba(11,110,79,.35)}
+  .usage{padding:2px 10px 8px;font-size:11.5px;color:var(--muted)}
+  .usage .bar{height:5px;border-radius:99px;background:var(--line-soft);margin-top:4px;overflow:hidden}
+  .usage .bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}
+  .menu-pop{position:absolute;bottom:64px;left:11px;right:11px;background:var(--surface);
+    border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;z-index:40}
+  .menu-pop button{width:100%;display:flex;align-items:center;gap:9px;background:none;border:none;cursor:pointer;
+    padding:9px 10px;border-radius:8px;font-size:13.5px;color:var(--ink);text-align:left}
+  .menu-pop button:hover{background:var(--paper-2)}
+  .menu-pop button svg{width:16px;height:16px;color:var(--muted)}
+  .menu-pop .up{color:var(--accent-deep);font-weight:600}
+  .menu-pop hr{border:none;border-top:1px solid var(--line-soft);margin:5px 2px}
+
+  /* ─────────────────────────  CONTENT  ───────────────────────── */
+  .content{flex:1;display:flex;flex-direction:column;min-width:0}
+  header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);
+    background:color-mix(in srgb,var(--paper) 85%, transparent);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10}
+  .menu-toggle{display:none;background:none;border:1px solid var(--line);border-radius:9px;padding:7px;cursor:pointer;color:var(--ink)}
+  .menu-toggle svg{width:18px;height:18px;display:block}
+  .conv-title{font-family:'Fraunces',serif;font-weight:600;font-size:16px;flex:1;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .flag-chip{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;
+    color:var(--accent-deep);background:var(--paper-2);padding:6px 12px;border-radius:99px;border:1px solid var(--line)}
+  .flag-dot{width:8px;height:8px;border-radius:99px;background:var(--accent)}
+
+  .hdr-logo{display:flex;align-items:center;gap:9px;margin-right:4px}
+  .hdr-logo img{width:30px;height:30px;border-radius:8px;box-shadow:var(--shadow)}
+  .hdr-logo .nm{font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:var(--ink)}
+  .hdr-logo::after{content:"";width:1px;height:20px;background:var(--line);margin-left:12px}
+  .hdr-right{display:flex;align-items:center;gap:10px;position:relative}
+  .hdr-user{display:flex;align-items:center;gap:8px;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:99px;padding:4px 6px 4px 10px;cursor:pointer;transition:.15s}
+  .hdr-user:hover{background:var(--surface)}
+  .hdr-user .uname{font-size:13px;font-weight:600;color:var(--ink);max-width:120px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hdr-user .av{width:28px;height:28px;border-radius:50%;
+    background:linear-gradient(140deg,var(--accent),var(--accent-deep));color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700}
+  .hdr-menu{position:absolute;top:46px;right:0;min-width:220px;background:var(--surface);
+    border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;z-index:60}
+  .hdr-menu .head{padding:9px 11px 8px;border-bottom:1px solid var(--line-soft);margin-bottom:4px}
+  .hdr-menu .head .n{font-size:13.5px;font-weight:600;color:var(--ink)}
+  .hdr-menu .head .e{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hdr-menu button{width:100%;display:flex;align-items:center;gap:9px;background:none;border:none;cursor:pointer;
+    padding:9px 11px;border-radius:8px;font-size:13.5px;color:var(--ink);text-align:left}
+  .hdr-menu button:hover{background:var(--paper-2)}
+  .hdr-menu button svg{width:16px;height:16px;color:var(--muted)}
+  .hdr-menu .up{color:var(--accent-deep);font-weight:600}
+  .hdr-menu hr{border:none;border-top:1px solid var(--line-soft);margin:5px 2px}
+
+  main{flex:1;overflow-y:auto;padding:26px 18px 8px;scroll-behavior:smooth}
+  .thread{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+  .welcome{max-width:680px;margin:6vh auto 0;text-align:center;padding:0 8px}
+  .welcome .big{font-family:'Fraunces',serif;font-weight:600;font-size:32px;line-height:1.18;letter-spacing:-.01em}
+  .welcome .big em{font-style:italic;color:var(--accent)}
+  .welcome p{color:var(--muted);font-size:15px;line-height:1.6;margin:14px auto 24px;max-width:560px}
+
+  /* ── Tarjeta de descarga para Mac (v16.9.1) ── */
+  .dl-card{max-width:420px;margin:18px auto 0;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px;
+    box-shadow:var(--shadow);text-align:center}
+  .dl-card .dl-ic{width:72px;height:72px;margin:0 auto 14px;border-radius:17px;
+    overflow:hidden;box-shadow:0 4px 14px rgba(21,32,27,.18)}
+  .dl-card .dl-ic img{width:100%;height:100%;display:block;object-fit:cover}
+  .dl-card h3{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin-bottom:4px}
+  .dl-card .dl-sub{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:16px}
+  .dl-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    width:100%;background:var(--ink);color:var(--paper);border:none;border-radius:11px;
+    padding:13px 18px;font-family:inherit;font-size:14.5px;font-weight:600;
+    cursor:pointer;transition:.15s;text-decoration:none}
+  .dl-btn:hover{opacity:.88}
+  .dl-btn svg{width:18px;height:18px}
+  .dl-btn.disabled{background:var(--paper-2);color:var(--muted);cursor:default;
+    border:1px solid var(--line)}
+  .dl-btn.disabled:hover{opacity:1}
+  .dl-meta{margin-top:11px;font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+  .dl-soon{display:inline-block;margin-left:7px;font-size:10px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.06em;color:var(--gold);
+    border:1px solid var(--gold);border-radius:20px;padding:2px 8px;vertical-align:middle}
+  .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  .ex{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:13px;
+    padding:15px 16px;cursor:pointer;transition:.15s;font-size:14px;line-height:1.4}
+  .ex:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:var(--shadow)}
+  .ex .k{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    color:var(--accent);margin-bottom:6px}
+
+  .msg{display:flex;gap:12px;max-width:88%;animation:rise .35s ease both}
+  .msg.user{align-self:flex-end;flex-direction:row-reverse}
+  .msg .av{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:grid;place-items:center;
+    font-size:12px;font-weight:600}
+  .msg.ai .av{background:linear-gradient(140deg,var(--accent),var(--accent-deep));color:#fff;
+    font-family:'Fraunces',serif}
+  .msg.user .av{background:var(--ink);color:var(--paper)}
+  .bubble{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 16px;
+    font-size:15px;line-height:1.55;white-space:pre-wrap;word-wrap:break-word;min-width:0}
+  .doc-prev{width:100%;max-width:100%}
+  .msg.user .bubble{background:var(--user-bubble);color:#fff;border-color:transparent}
+
+  .doc-card{margin-top:12px;border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--paper)}
+  .doc-prev{width:100%;max-height:230px;object-fit:cover;object-position:top;display:block;border-bottom:1px solid var(--line);background:#fff}
+  .doc-row{display:flex;align-items:center;gap:13px;padding:13px 15px}
+  .doc-icon{width:42px;height:42px;border-radius:9px;display:grid;place-items:center;color:#fff;
+    font-size:11px;font-weight:700;flex-shrink:0}
+  .doc-icon.word{background:#2563eb}.doc-icon.excel{background:#0b8a4b}.doc-icon.powerpoint{background:#d4690e}
+  .doc-meta{flex:1;min-width:0}
+  .doc-meta .name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .doc-meta .verif{font-size:12px;color:var(--accent);margin-top:2px}
+  .doc-dl{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:9px 16px;
+    font-size:13.5px;font-weight:600;cursor:pointer;transition:background .15s;flex-shrink:0}
+  .doc-dl:hover{background:var(--accent-deep)}
+  .doc-old{font-size:12px;color:var(--muted);flex-shrink:0}
+
+  .typing{display:flex;gap:5px;padding:3px 0}
+  .typing span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite both}
+  .typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+
+  .composer{border-top:1px solid var(--line);padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+    background:var(--paper)}
+  .composer-inner{max-width:760px;margin:0 auto}
+  .input-wrap{display:flex;align-items:flex-end;gap:10px;background:var(--surface);border:1px solid var(--line);
+    border-radius:16px;padding:8px 8px 8px 16px;box-shadow:var(--shadow)}
+  .input-wrap:focus-within{border-color:var(--accent)}
+  textarea#input{flex:1;border:none;background:none;resize:none;font-family:inherit;font-size:15px;
+    color:var(--ink);line-height:1.5;max-height:150px;padding:7px 0}
+  textarea#input:focus{outline:none}
+  .send{width:42px;height:42px;border-radius:12px;background:var(--accent);color:#fff;border:none;
+    cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:background .15s}
+  .send:hover{background:var(--accent-deep)}.send:disabled{opacity:.5;cursor:default}
+  .send svg{width:19px;height:19px}
+  .foot-note{text-align:center;font-size:11.5px;color:var(--muted);margin-top:9px;max-width:760px;
+    margin-left:auto;margin-right:auto}
+
+  /* Overlay + modal genérico */
+  .overlay{position:fixed;inset:0;background:rgba(21,32,27,.45);backdrop-filter:blur(3px);
+    display:grid;place-items:center;z-index:60;padding:20px}
+  .modal{background:var(--surface);border:1px solid var(--line);border-radius:18px;max-width:460px;width:100%;
+    padding:28px 28px 24px;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:rise .35s ease both}
+  .modal h2{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin-bottom:6px}
+  .modal .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .modal .body{font-size:14px;line-height:1.6}
+  .modal .body b{color:var(--accent-deep)} .modal .body ul{margin:10px 0 4px 18px}.modal .body li{margin:5px 0}
+  .modal-actions{display:flex;gap:10px;margin-top:20px}
+  .ghost-btn{background:none;border:1px solid var(--line);border-radius:11px;padding:12px 16px;cursor:pointer;
+    font-size:14px;color:var(--ink);font-weight:500}
+  .plan-row{display:flex;gap:10px;margin:14px 0}
+  .plan{flex:1;border:1px solid var(--line);border-radius:13px;padding:14px;text-align:center}
+  .plan.hot{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,110,79,.12)}
+  .plan .pn{font-weight:700;font-size:14px} .plan .pp{font-family:'Fraunces',serif;font-size:20px;margin:6px 0}
+  .plan .pd{font-size:12px;color:var(--muted)}
+
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+
+  @media(max-width:780px){
+    .sidebar{position:fixed;inset:0 auto 0 0;transform:translateX(-100%);box-shadow:0 0 40px rgba(0,0,0,.3)}
+    .sidebar.open{transform:none}
+    .menu-toggle{display:grid;place-items:center}
+    .examples{grid-template-columns:1fr}
+    .welcome .big{font-size:26px}
+    .msg{max-width:100%}
+    .msg.ai{align-self:stretch}
+    .doc-prev{max-height:200px}
+    .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:25}
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────────  AUTH  ───────────── -->
+<div class="auth" id="auth">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <img src="logo.png" alt="WEP AI">
+      <h1>WEP AI</h1>
+    </div>
+    <div class="auth-sub">Documentos de negocio con la ley colombiana al día</div>
+    <div class="tabs">
+      <button class="tab active" id="tabLogin">Iniciar sesión</button>
+      <button class="tab" id="tabReg">Crear cuenta</button>
+    </div>
+    <div class="auth-err hidden" id="authErr"></div>
+
+    <!-- Login -->
+    <div id="formLogin">
+      <div class="field"><label>Correo</label><input type="email" id="liEmail" autocomplete="email" placeholder="tucorreo@empresa.com"></div>
+      <div class="field"><label>Contraseña</label><input type="password" id="liPass" autocomplete="current-password" placeholder="••••••••"></div>
+      <button class="primary-btn" id="loginBtn">Entrar</button>
+    </div>
+
+    <!-- Registro -->
+    <div id="formReg" class="hidden">
+      <div class="row2">
+        <div class="field"><label>Nombre</label><input type="text" id="rgName" placeholder="María"></div>
+        <div class="field"><label>Apellido</label><input type="text" id="rgLast" placeholder="Gómez"></div>
+      </div>
+      <div class="field"><label>Correo</label><input type="email" id="rgEmail" autocomplete="email" placeholder="tucorreo@empresa.com"></div>
+      <div class="field"><label>Contraseña</label><input type="password" id="rgPass" autocomplete="new-password" placeholder="Mínimo 8 caracteres"></div>
+      <div class="field"><label>Confirmar contraseña</label><input type="password" id="rgPass2" autocomplete="new-password" placeholder="Repite tu contraseña"></div>
+      <button class="primary-btn" id="regBtn">Crear cuenta gratis</button>
+    </div>
+
+    <div class="auth-foot">Al continuar aceptas que WEP AI genera <b>borradores</b> y no constituye asesoría legal.<br>Plan Gratis: 5 documentos al mes.</div>
+
+    <!-- ── Descarga para Mac (v16.9.1) ── -->
+    <div class="dl-card">
+      <div class="dl-ic">
+        <img src="wep_icon.png" alt="WEP AI" width="72" height="72">
+      </div>
+      <h3>¿Usas Mac?</h3>
+      <div class="dl-sub">Descarga la app de escritorio y trabaja con Word, Excel y PowerPoint directamente desde tu MacBook.</div>
+      <a class="dl-btn disabled" id="dlMacBtn" role="button" aria-disabled="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar para Mac
+        <span class="dl-soon">Próximamente</span>
+      </a>
+      <div class="dl-meta">macOS 12 o superior · Apple Silicon e Intel</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────  APP  ───────────── -->
+<div class="app hidden" id="app">
+  <div class="scrim hidden" id="scrim"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-top">
+      <div class="sb-brand"><img src="logo.png" alt="WEP AI"><span class="nm">WEP AI</span></div>
+      <button class="new-btn" id="newBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuevo documento
+      </button>
+    </div>
+    <div class="sb-label">Historial</div>
+    <div class="conv-list" id="convList"></div>
+
+    <div class="usage" id="usage"></div>
+    <div class="user-box">
+      <div class="menu-pop hidden" id="menuPop">
+        <button class="up" id="upgradeMenu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.6 5.8 21 7 14 2 9.3 9 8.5 12 2"/></svg>
+          Mejorar a Pro</button>
+        <button id="themeBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <span id="themeLabel">Modo oscuro</span></button>
+        <hr>
+        <button id="logoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Cerrar sesión</button>
+      </div>
+      <button class="user-btn" id="userBtn">
+        <div class="avatar" id="avatar">·</div>
+        <div class="user-info"><div class="un" id="uName">·</div><div class="ue" id="uEmail">·</div></div>
+        <span class="badge free" id="planBadge">Gratis</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="content">
+    <header>
+      <button class="menu-toggle" id="menuToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div class="hdr-logo"><img src="wep_icon.png" alt="WEP AI"><span class="nm">AI</span></div>
+      <div class="conv-title" id="convTitle">Nuevo documento</div>
+      <div class="hdr-right">
+        <div class="flag-chip"><span class="flag-dot"></span>Colombia</div>
+        <button class="hdr-user" id="hdrUserBtn">
+          <span class="uname" id="hdrUName">Usuario</span>
+          <span class="av" id="hdrAvatar">·</span>
+        </button>
+        <div class="hdr-menu hidden" id="hdrMenu">
+          <div class="head">
+            <div class="n" id="hdrMenuName">Usuario</div>
+            <div class="e" id="hdrMenuEmail">correo@ejemplo.com</div>
+          </div>
+          <button class="up" id="hdrUpgrade">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.6 5.8 21 7 14 2 9.3 9 8.5 12 2"/></svg>
+            Mejorar a Pro</button>
+          <button id="hdrTheme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <span id="hdrThemeLabel">Modo oscuro</span></button>
+          <hr>
+          <button id="hdrLogout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            Cerrar sesión</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main"><div class="thread" id="thread"></div></main>
+
+    <div class="composer">
+      <div class="composer-inner">
+        <div class="input-wrap">
+          <textarea id="input" rows="1" placeholder="Describe el documento que necesitas…"></textarea>
+          <button class="send" id="send" title="Enviar" aria-label="Enviar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="foot-note">WEP AI genera borradores con normativa colombiana vigente. No constituye asesoría legal; revisa los documentos antes de usarlos.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de mejora de plan -->
+<div class="overlay hidden" id="upModal">
+  <div class="modal">
+    <h2>Mejora a WEP AI Pro</h2>
+    <div class="sub">Genera documentos sin límite y desbloquea más funciones.</div>
+    <div class="plan-row">
+      <div class="plan"><div class="pn">Gratis</div><div class="pp">$0</div><div class="pd">5 documentos/mes<br>Historial 7 días</div></div>
+      <div class="plan hot"><div class="pn">Pro</div><div class="pp">Ilimitado</div><div class="pd">Documentos sin límite<br>Correcciones · Historial 90 días</div></div>
+    </div>
+    <div class="modal-actions">
+      <button class="ghost-btn" id="upCancel">Ahora no</button>
+      <button class="primary-btn" id="upConfirm" style="margin-top:0">Quiero mejorar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Disclaimer primer uso -->
+<div class="overlay hidden" id="disclaimer">
+  <div class="modal">
+    <h2>Antes de empezar</h2>
+    <div class="sub">Cómo funciona WEP AI y qué debes tener en cuenta</div>
+    <div class="body">
+      <p>WEP AI genera <b>borradores</b> de documentos de negocio adaptados a la normativa de Colombia, consultando fuentes oficiales para usar datos legales y fiscales vigentes.</p>
+      <ul>
+        <li>WEP AI <b>no es asesoría legal</b> ni reemplaza a un abogado o contador.</li>
+        <li>Ningún sistema automatizado <b>garantiza exactitud legal absoluta</b>.</li>
+        <li>Eres responsable de <b>revisar cada documento antes de usarlo</b>.</li>
+      </ul>
+    </div>
+    <div class="modal-actions"><button class="primary-btn" id="discOk" style="margin-top:0">Entiendo y acepto</button></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+async function api(path, opts={}){
+  const r = await fetch(path, {credentials:'include', headers:{'Content-Type':'application/json'}, ...opts});
+  let data=null; try{ data = await r.json(); }catch(e){}
+  if(!r.ok){ const err = new Error((data&&data.detail)||'Error'); err.status=r.status; err.detail=(data&&data.detail); throw err; }
+  return data;
+}
+
+/* ───── Tema ───── */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wepai_theme', t);
+  const dark = t==='dark';
+  const lbl = dark ? 'Modo claro' : 'Modo oscuro';
+  if($('themeLabel')) $('themeLabel').textContent = lbl;
+  if($('hdrThemeLabel')) $('hdrThemeLabel').textContent = lbl;
+}
+applyTheme(localStorage.getItem('wepai_theme') || 'light');
+$('themeBtn').addEventListener('click', ()=>{
+  applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
+});
+
+/* ───── Auth UI ───── */
+let me = null, convId = null, busy = false;
+function showErr(m){ const e=$('authErr'); e.textContent=m; e.classList.remove('hidden'); }
+function clearErr(){ $('authErr').classList.add('hidden'); }
+$('tabLogin').onclick=()=>{ $('tabLogin').classList.add('active');$('tabReg').classList.remove('active');
+  $('formLogin').classList.remove('hidden');$('formReg').classList.add('hidden');clearErr(); };
+$('tabReg').onclick=()=>{ $('tabReg').classList.add('active');$('tabLogin').classList.remove('active');
+  $('formReg').classList.remove('hidden');$('formLogin').classList.add('hidden');clearErr(); };
+
+$('loginBtn').onclick=async()=>{
+  clearErr(); const b=$('loginBtn'); b.disabled=true;
+  try{ const d=await api('/api/login',{method:'POST',body:JSON.stringify({email:$('liEmail').value,password:$('liPass').value})});
+    me=d.user; enterApp(); }
+  catch(e){ showErr(e.detail||'No se pudo iniciar sesión.'); } finally{ b.disabled=false; }
+};
+$('regBtn').onclick=async()=>{
+  clearErr();
+  const pass=$('rgPass').value, pass2=$('rgPass2').value;
+  if(pass.length<8){ showErr('La contraseña debe tener al menos 8 caracteres.'); return; }
+  if(pass!==pass2){ showErr('Las contraseñas no coinciden.'); $('rgPass2').focus(); return; }
+  const b=$('regBtn'); b.disabled=true;
+  try{ const d=await api('/api/register',{method:'POST',body:JSON.stringify({
+        name:$('rgName').value,last_name:$('rgLast').value,email:$('rgEmail').value,password:pass})});
+    me=d.user; enterApp(); }
+  catch(e){ showErr(e.detail||'No se pudo crear la cuenta.'); } finally{ b.disabled=false; }
+};
+[$('liPass'),$('rgPass'),$('rgPass2')].forEach(el=>el.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){ (el===$('liPass')?$('loginBtn'):$('regBtn')).click(); }}));
+
+$('logoutBtn').onclick=async()=>{ await api('/api/logout',{method:'POST'}).catch(()=>{});
+  me=null; convId=null; $('app').classList.add('hidden'); $('auth').classList.remove('hidden'); $('menuPop').classList.add('hidden'); $('hdrMenu').classList.add('hidden'); };
+
+/* ───── User menu ───── */
+$('userBtn').onclick=(e)=>{ e.stopPropagation(); $('menuPop').classList.toggle('hidden'); };
+document.addEventListener('click',()=>{ $('menuPop').classList.add('hidden'); $('hdrMenu').classList.add('hidden'); });
+$('menuPop').addEventListener('click',e=>e.stopPropagation());
+$('upgradeMenu').onclick=()=>{ $('menuPop').classList.add('hidden'); $('upModal').classList.remove('hidden'); };
+
+/* ───── User menu (header, arriba derecha) ───── */
+$('hdrUserBtn').onclick=(e)=>{ e.stopPropagation(); $('hdrMenu').classList.toggle('hidden'); };
+$('hdrMenu').addEventListener('click',e=>e.stopPropagation());
+$('hdrUpgrade').onclick=()=>{ $('hdrMenu').classList.add('hidden'); $('upModal').classList.remove('hidden'); };
+$('hdrTheme').onclick=()=>{ applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); };
+$('hdrLogout').onclick=()=>$('logoutBtn').onclick();
+$('upCancel').onclick=()=>$('upModal').classList.add('hidden');
+$('upConfirm').onclick=()=>{ $('upModal').classList.add('hidden');
+  addMsg('ai','Para activar el plan Pro escríbenos o usa el botón de pago de tu cuenta. (La pasarela de pago se conecta en el despliegue.)'); };
+
+/* ───── Mobile sidebar ───── */
+function closeSb(){ $('sidebar').classList.remove('open'); $('scrim').classList.add('hidden'); }
+$('menuToggle').onclick=()=>{ $('sidebar').classList.add('open'); $('scrim').classList.remove('hidden'); };
+$('scrim').onclick=closeSb;
+
+/* ───── Render usuario ───── */
+function initials(n,l){ return ((n||'?')[0]+(l||'')[0]||'').toUpperCase()||'·'; }
+function renderUser(){
+  $('avatar').textContent=initials(me.name,me.last_name);
+  $('uName').textContent=(me.name+' '+(me.last_name||'')).trim();
+  $('uEmail').textContent=me.email;
+  if($('hdrAvatar')) $('hdrAvatar').textContent=initials(me.name,me.last_name);
+  if($('hdrUName')) $('hdrUName').textContent=(me.name+' '+(me.last_name||'')).trim();
+  if($('hdrMenuName')) $('hdrMenuName').textContent=(me.name+' '+(me.last_name||'')).trim();
+  if($('hdrMenuEmail')) $('hdrMenuEmail').textContent=me.email;
+  const b=$('planBadge'); b.className='badge '+me.plan; b.textContent=me.plan_label;
+  const u=$('usage');
+  if(me.docs_limit===-1){ u.innerHTML='Documentos: <b>ilimitados</b> · plan '+me.plan_label; }
+  else{
+    const pct=Math.min(100,Math.round(me.docs_used/me.docs_limit*100));
+    u.innerHTML='Documentos este mes: <b>'+me.docs_used+' / '+me.docs_limit+'</b>'+
+      '<div class="bar"><i style="width:'+pct+'%"></i></div>';
+  }
+}
+
+/* ───── Conversaciones ───── */
+async function loadConversations(){
+  try{ const d=await api('/api/conversations'); renderConvList(d.conversations); }catch(e){}
+}
+function renderConvList(list){
+  const el=$('convList'); el.innerHTML='';
+  if(!list.length){ el.innerHTML='<div class="conv-empty">Aún no tienes documentos. Crea el primero arriba.</div>'; return; }
+  list.forEach(c=>{
+    const b=document.createElement('button'); b.className='conv'+(c.id===convId?' active':'');
+    b.textContent=c.title||'Sin título'; b.onclick=()=>openConversation(c.id,c.title);
+    el.appendChild(b);
+  });
+}
+function newConversation(){
+  convId=null; $('convTitle').textContent='Nuevo documento';
+  $('thread').innerHTML=`<div class="welcome" id="welcome">
+    <div class="big">Tus documentos, con la <em>ley colombiana</em> al día.</div>
+    <p>Contratos, cotizaciones, nóminas, facturas y presentaciones — generados en segundos con el Código Sustantivo del Trabajo, la DIAN y el IVA del 19% aplicados correctamente.</p>
+    <div class="examples" id="examples">
+      <div class="ex" data-prompt="Necesito un contrato de trabajo a término indefinido para un desarrollador de software, salario 5.000.000 COP mensuales."><span class="k">Word · Contrato</span>Contrato laboral indefinido con prestaciones del CST</div>
+      <div class="ex" data-prompt="Hazme una cotización de servicios de diseño web por 8.000.000 COP más IVA para un cliente."><span class="k">Excel · Cotización</span>Cotización de servicios con IVA del 19%</div>
+      <div class="ex" data-prompt="Necesito una factura de venta para mi cliente por consultoría, 3.500.000 COP."><span class="k">Word · Factura</span>Factura de venta con NIT y retención</div>
+      <div class="ex" data-prompt="Crea una presentación de pitch para mi startup de tecnología, 8 diapositivas."><span class="k">PowerPoint · Pitch</span>Presentación de negocio profesional</div>
+    </div></div>`;
+  document.querySelectorAll('.conv').forEach(c=>c.classList.remove('active'));
+  closeSb();
+}
+async function openConversation(id,title){
+  convId=id; $('convTitle').textContent=title||'Conversación';
+  document.querySelectorAll('.conv').forEach(c=>c.classList.remove('active'));
+  $('thread').innerHTML=''; closeSb();
+  try{
+    const d=await api('/api/conversations/'+id);
+    d.messages.forEach(m=>addMsg(m.role==='user'?'user':'ai', m.content));
+    d.documents.forEach(doc=>{
+      const last=[...document.querySelectorAll('.msg.ai .bubble')].pop();
+      if(last) addDocCard(last, {tipo:doc.tipo, filename:doc.title, old:true});
+    });
+  }catch(e){}
+}
+
+/* ───── Mensajes ───── */
+function scrollDown(){ $('main').scrollTop=$('thread').scrollHeight+600; }
+function addMsg(role,text){
+  const w=$('welcome'); if(w) w.remove();
+  const m=document.createElement('div'); m.className='msg '+(role==='user'?'user':'ai');
+  const av=document.createElement('div'); av.className='av'; av.textContent=role==='user'?'Tú':'W';
+  const bub=document.createElement('div'); bub.className='bubble'; bub.textContent=text;
+  m.append(av,bub); $('thread').appendChild(m); scrollDown(); return m;
+}
+function addTyping(){
+  const w=$('welcome'); if(w) w.remove();
+  const m=document.createElement('div'); m.className='msg ai'; m.id='typing';
+  m.innerHTML='<div class="av">W</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+  $('thread').appendChild(m); scrollDown(); return m;
+}
+function addDocCard(bubble, doc){
+  const icons={word:'DOCX',excel:'XLSX',powerpoint:'PPTX'};
+  const card=document.createElement('div'); card.className='doc-card';
+  let html='';
+  if(doc.preview_url) html+=`<img class="doc-prev" src="${doc.preview_url}" alt="Vista previa del documento">`;
+  html+=`<div class="doc-row">
+    <div class="doc-icon ${doc.tipo}">${icons[doc.tipo]||'DOC'}</div>
+    <div class="doc-meta"><div class="name">${escapeHtml(doc.filename)}</div>
+      <div class="verif">✓ Verificado con leyes vigentes de Colombia</div></div>
+    ${doc.old ? '<span class="doc-old">Generado</span>' : '<button class="doc-dl">Descargar</button>'}
+  </div>`;
+  card.innerHTML=html;
+  const dl=card.querySelector('.doc-dl');
+  if(dl) dl.onclick=()=>window.location=doc.download_url;
+  bubble.appendChild(card); scrollDown();
+}
+function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ───── Composer ───── */
+const input=$('input');
+input.addEventListener('input',()=>{ input.style.height='auto'; input.style.height=Math.min(input.scrollHeight,150)+'px'; });
+input.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); doSend(); }});
+$('send').onclick=doSend;
+$('thread').addEventListener('click',e=>{ const ex=e.target.closest('.ex'); if(ex){ input.value=ex.dataset.prompt; doSend(); }});
+$('newBtn').onclick=newConversation;
+
+async function doSend(){
+  const text=input.value.trim(); if(!text||busy) return;
+  busy=true; $('send').disabled=true;
+  addMsg('user',text); input.value=''; input.style.height='auto';
+  const typing=addTyping();
+  try{
+    const d=await api('/api/chat',{method:'POST',body:JSON.stringify({conversation_id:convId,message:text})});
+    typing.remove();
+    if(d.conversation_id && d.conversation_id!==convId){ convId=d.conversation_id; if(d.title) $('convTitle').textContent=d.title; loadConversations(); }
+    const m=addMsg('ai', d.text||'');
+    if(d.document) addDocCard(m.querySelector('.bubble'), d.document);
+    if(d.limit_reached){ refreshMe(); $('upModal').classList.remove('hidden'); }
+    else if(d.document){ refreshMe(); }   // actualizar contador de documentos
+  }catch(e){
+    typing.remove();
+    if(e.status===429) addMsg('ai','Vas muy rápido. Espera unos segundos y vuelve a intentar.');
+    else if(e.status===401){ addMsg('ai','Tu sesión expiró. Inicia sesión de nuevo.'); setTimeout(()=>$('logoutBtn').click(),1200); }
+    else addMsg('ai','⚠️ '+(e.detail||'No pude conectar con el servidor.'));
+  }finally{ busy=false; $('send').disabled=false; input.focus(); }
+}
+async function refreshMe(){ try{ me=await api('/api/me'); renderUser(); }catch(e){} }
+
+/* ───── Arranque ───── */
+function enterApp(){
+  $('auth').classList.add('hidden'); $('app').classList.remove('hidden');
+  renderUser(); loadConversations(); newConversation();
+  if(!localStorage.getItem('wepai_disclaimer_ok')) $('disclaimer').classList.remove('hidden');
+  input.focus();
+}
+$('discOk').onclick=()=>{ localStorage.setItem('wepai_disclaimer_ok','1'); $('disclaimer').classList.add('hidden'); input.focus(); };
+
+(async function init(){
+  try{ me=await api('/api/me'); enterApp(); }
+  catch(e){ $('auth').classList.remove('hidden'); }
+})();
+</script>
+</body>
+</html>
